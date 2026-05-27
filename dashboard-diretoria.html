@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard Diretoria — DeRose Ibira 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --azul: #1E2EFF;
+    --azul-escuro: #1519CC;
+    --preto: #111111;
+    --branco: #FFFFFF;
+    --bege: #F5EFE4;
+    --bege-escuro: #EDE5D8;
+    --dourado: #C8A84B;
+    --dourado-claro: #E2C56A;
+    --verde: #2D7A52;
+    --cinza: #8A8A8A;
+    --cinza-linha: #E0D8CE;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bege);
+    color: var(--preto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--azul);
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--dourado);
+  }
+  .header-left .logo {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+  .header-left h1 {
+    font-family: 'DM Serif Display', serif;
+    color: var(--branco);
+    font-size: 26px;
+    font-weight: 400;
+  }
+  .header-left h1 span { color: var(--dourado-claro); }
+  .header-right {
+    text-align: right;
+  }
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: #4ADE80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .header-date { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+
+  /* MAIN */
+  .main { padding: 36px 48px; max-width: 1400px; margin: 0 auto; }
+
+  /* PROGRESS SECTION */
+  .progress-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .progress-card {
+    background: var(--branco);
+    border-radius: 6px;
+    padding: 28px 32px;
+    border: 1px solid var(--cinza-linha);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .progress-card.azul::before { background: var(--azul); }
+  .progress-card.preto::before { background: var(--preto); }
+  .progress-card.ouro::before { background: var(--dourado); }
+
+  .pc-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 12px;
+  }
+  .pc-campanha {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--azul);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .pc-campanha.preto { color: var(--preto); }
+
+  .pc-nums {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .pc-atual {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--azul);
+    line-height: 1;
+  }
+  .pc-atual.preto { color: var(--preto); }
+  .pc-meta {
+    font-size: 16px;
+    color: var(--cinza);
+    font-weight: 300;
+  }
+  .progress-bar {
+    height: 8px;
+    background: var(--bege-escuro);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1.5s ease;
+  }
+  .fill-azul { background: linear-gradient(to right, var(--azul), #5B6EFF); }
+  .fill-preto { background: linear-gradient(to right, var(--preto), #555); }
+  .fill-ouro { background: linear-gradient(to right, var(--dourado), var(--dourado-claro)); }
+
+  .pc-pct {
+    font-size: 11px;
+    color: var(--cinza);
+    display: flex;
+    justify-content: space-between;
+  }
+  .pc-pct strong { color: var(--azul); font-weight: 600; }
+  .pc-pct strong.preto { color: var(--preto); }
+
+  /* KPI GRID */
+  .kpi-section {
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cinza-linha);
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .kpi-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-linha);
+    border-radius: 6px;
+    padding: 20px 22px;
+    position: relative;
+  }
+  .kpi-card.dest-azul {
+    background: var(--azul);
+    border-color: var(--azul);
+  }
+  .kpi-card.dest-preto {
+    background: var(--preto);
+    border-color: var(--preto);
+  }
+  .kpi-card.dest-ouro {
+    background: var(--dourado);
+    border-color: var(--dourado);
+  }
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 8px;
+  }
+  .dest-azul .kpi-label,
+  .dest-preto .kpi-label { color: rgba(255,255,255,0.45); }
+  .dest-ouro .kpi-label { color: rgba(0,0,0,0.4); }
+
+  .kpi-valor {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--azul);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .dest-azul .kpi-valor { color: var(--dourado-claro); }
+  .dest-preto .kpi-valor { color: var(--dourado-claro); }
+  .dest-ouro .kpi-valor { color: var(--preto); }
+
+  .kpi-sub {
+    font-size: 10.5px;
+    color: var(--cinza);
+    line-height: 1.4;
+  }
+  .dest-azul .kpi-sub,
+  .dest-preto .kpi-sub { color: rgba(255,255,255,0.5); }
+  .dest-ouro .kpi-sub { color: rgba(0,0,0,0.45); }
+
+  .kpi-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9.5px;
+    margin-top: 6px;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .trend-up { background: #DCFCE7; color: #14532D; }
+  .trend-down { background: #FFE4E1; color: #B91C1C; }
+  .trend-neutral { background: var(--bege-escuro); color: var(--cinza); }
+
+  /* FUNIL VISUAL */
+  .funil-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .funil-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-linha);
+    border-radius: 6px;
+    padding: 24px 28px;
+  }
+  .funil-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fc-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .fc-dot.azul { background: var(--azul); }
+  .fc-dot.preto { background: var(--preto); }
+
+  .funil-row {
+    margin-bottom: 10px;
+  }
+  .funil-row-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+  .funil-row-label { color: var(--cinza); }
+  .funil-row-val { font-weight: 600; color: var(--preto); }
+  .funil-bar {
+    height: 6px;
+    background: var(--bege-escuro);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .funil-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .funil-fill.azul { background: var(--azul); }
+  .funil-fill.preto { background: var(--preto); }
+  .funil-fill.ouro { background: var(--dourado); }
+
+  /* CRONOGRAMA */
+  .crono-section {
+    background: var(--branco);
+    border: 1px solid var(--cinza-linha);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+  }
+  .crono-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--preto);
+  }
+  .crono-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    border: 1px solid var(--cinza-linha);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .crono-col {
+    text-align: center;
+    padding: 20px 8px;
+    border-right: 1px solid var(--cinza-linha);
+    position: relative;
+  }
+  .crono-col:last-child {
+    border-right: none;
+    background: var(--azul);
+  }
+  .crono-col.atual { background: rgba(30, 46, 255, 0.05); }
+  .crono-mes-nome {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--azul);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .crono-col.atual .crono-mes-nome { color: var(--azul); }
+  .crono-col:last-child .crono-mes-nome { color: var(--dourado-claro); }
+  .crono-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--preto);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .crono-col:last-child .crono-num { color: var(--branco); }
+  .crono-sub {
+    font-size: 9px;
+    color: var(--cinza);
+    display: block;
+  }
+  .crono-col:last-child .crono-sub { color: rgba(255,255,255,0.5); }
+  .crono-bar {
+    margin-top: 10px;
+    height: 4px;
+    background: var(--bege-escuro);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .crono-bar-fill {
+    height: 100%;
+    background: var(--azul);
+    border-radius: 2px;
+  }
+  .crono-col:last-child .crono-bar { background: rgba(255,255,255,0.15); }
+  .crono-col:last-child .crono-bar-fill { background: var(--dourado-claro); }
+
+  /* ROI SECTION */
+  .roi-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .roi-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-linha);
+    border-radius: 6px;
+    padding: 22px 24px;
+  }
+  .roi-card.verde-box { border-left: 3px solid var(--verde); }
+  .roi-card.azul-box { border-left: 3px solid var(--azul); }
+  .roi-card.ouro-box { border-left: 3px solid var(--dourado); }
+  .roi-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--cinza); margin-bottom: 8px; }
+  .roi-valor { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--preto); line-height: 1; margin-bottom: 4px; }
+  .roi-desc { font-size: 11px; color: var(--cinza); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--preto);
+    padding: 18px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .footer span { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1.5px; text-transform: uppercase; }
+  .footer strong { color: var(--dourado-claro); }
+
+  /* ATUALIZAR */
+  .update-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bege-escuro);
+    border: 1px solid var(--cinza-linha);
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 10px;
+    color: var(--cinza);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+  }
+  .update-badge:hover { background: var(--azul); color: var(--branco); border-color: var(--azul); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">DeRose Method &nbsp;·&nbsp; Unidade Ibira &nbsp;·&nbsp; São Paulo</div>
+    <h1>Dashboard <span>Diretoria</span> — Visão Geral</h1>
+  </div>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div> Atualizado semanalmente</div>
+    <div class="header-date">Maio 2026 &nbsp;·&nbsp; Uso Interno</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PROGRESSO METAS -->
+  <div class="section-title">Progresso das Metas Principais</div>
+  <div class="progress-section">
+    <div class="progress-card ouro">
+      <div class="pc-label">Meta Global — Alunos Matriculados</div>
+      <div class="pc-campanha" style="color:var(--dourado);">🎯 Meta 150 — Dez/26</div>
+      <div class="pc-nums">
+        <div class="pc-atual" style="color:var(--dourado);">10</div>
+        <div class="pc-meta">/ 150 alunos</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill fill-ouro" style="width:6.7%"></div>
+      </div>
+      <div class="pc-pct">
+        <span><strong style="color:var(--dourado);">6,7%</strong> concluído</span>
+        <span>140 alunos restantes</span>
+      </div>
+    </div>
+    <div class="progress-card preto">
+      <div class="pc-label">Campanha 2 — Open 100</div>
+      <div class="pc-campanha preto">Open 100 — Inauguração Dez/26</div>
+      <div class="pc-nums">
+        <div class="pc-atual preto">10</div>
+        <div class="pc-meta">/ 100 alunos</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill fill-preto" style="width:10%"></div>
+      </div>
+      <div class="pc-pct">
+        <span><strong class="preto">10%</strong> concluído</span>
+        <span>90 vagas restantes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs CONSOLIDADOS -->
+  <div class="section-title">KPIs Consolidados — Ambas as Campanhas</div>
+  <div class="kpi-grid" style="margin-bottom:28px;">
+    <div class="kpi-card dest-azul">
+      <div class="kpi-label">Total Leads / Mês</div>
+      <div class="kpi-valor">—</div>
+      <div class="kpi-sub">Meta: 192 leads/mês (100 C1 + 92 C2)</div>
+    </div>
+    <div class="kpi-card dest-preto">
+      <div class="kpi-label">Total Matrículas / Mês</div>
+      <div class="kpi-valor">—</div>
+      <div class="kpi-sub">Meta: 28 matrículas/mês (15 C1 + 13 C2)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">CAC Consolidado</div>
+      <div class="kpi-valor" style="color:var(--preto);">—</div>
+      <div class="kpi-sub">Meta: ≤ R$ 350 por aluno</div>
+      <span class="kpi-trend trend-neutral">A preencher</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Invest. Total / Mês</div>
+      <div class="kpi-valor" style="color:var(--preto);">R$3–5k</div>
+      <div class="kpi-sub">Em Meta Ads (orçamento previsto)</div>
+      <span class="kpi-trend trend-neutral">Planejado</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">MRR — Receita Recorrente</div>
+      <div class="kpi-valor" style="color:var(--verde);">—</div>
+      <div class="kpi-sub">Meta Out/26: R$36.000/mês (100 alunos × R$360)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">ROI Geral</div>
+      <div class="kpi-valor" style="color:var(--verde);">8–14x</div>
+      <div class="kpi-sub">Projeção: cada aluno gera R$3.600/ano</div>
+      <span class="kpi-trend trend-up">↑ Projetado</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Taxa Conv. Geral</div>
+      <div class="kpi-valor" style="color:var(--preto);">—</div>
+      <div class="kpi-sub">Meta: 15% leads → matrícula</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">NPS — Net Promoter</div>
+      <div class="kpi-valor" style="color:var(--preto);">&gt; 72</div>
+      <div class="kpi-sub">Meta mínima Jun–Set/26</div>
+      <span class="kpi-trend trend-neutral">A medir</span>
+    </div>
+  </div>
+
+  <!-- FUNILS -->
+  <div class="section-title">Funil por Campanha — Projeção Mensal</div>
+  <div class="funil-section">
+    <div class="funil-card">
+      <div class="funil-card-title">
+        <div class="fc-dot azul"></div>
+        Campanha 1 — Treinamento Ancestral
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Alcance Reels/Ads</span><span class="funil-row-val">5.000</span></div>
+        <div class="funil-bar"><div class="funil-fill azul" style="width:100%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Entram no Grupo WA</span><span class="funil-row-val">500</span></div>
+        <div class="funil-bar"><div class="funil-fill azul" style="width:10%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Leads Qualificados CRM</span><span class="funil-row-val">100</span></div>
+        <div class="funil-bar"><div class="funil-fill azul" style="width:2%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Aulas Experimentais</span><span class="funil-row-val">40</span></div>
+        <div class="funil-bar"><div class="funil-fill ouro" style="width:0.8%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Matrículas / mês</span><span class="funil-row-val" style="color:var(--azul);font-size:14px;">15</span></div>
+        <div class="funil-bar"><div class="funil-fill ouro" style="width:0.3%"></div></div>
+      </div>
+    </div>
+    <div class="funil-card">
+      <div class="funil-card-title">
+        <div class="fc-dot preto"></div>
+        Campanha 2 — Open 100
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Alcance / mês</span><span class="funil-row-val">3.000</span></div>
+        <div class="funil-bar"><div class="funil-fill preto" style="width:100%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Formulários Landing Page</span><span class="funil-row-val">300</span></div>
+        <div class="funil-bar"><div class="funil-fill preto" style="width:10%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Leads Qualificados</span><span class="funil-row-val">92</span></div>
+        <div class="funil-bar"><div class="funil-fill preto" style="width:3.1%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Aulas Experimentais</span><span class="funil-row-val">37</span></div>
+        <div class="funil-bar"><div class="funil-fill ouro" style="width:1.2%"></div></div>
+      </div>
+      <div class="funil-row">
+        <div class="funil-row-header"><span class="funil-row-label">Matrículas / mês</span><span class="funil-row-val" style="color:var(--preto);font-size:14px;">13</span></div>
+        <div class="funil-bar"><div class="funil-fill ouro" style="width:0.4%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRONOGRAMA -->
+  <div class="section-title">Cronograma Acumulado — Open 100 (Jun–Dez/26)</div>
+  <div class="crono-section">
+    <div class="crono-grid">
+      <div class="crono-col atual">
+        <span class="crono-mes-nome">Jun</span>
+        <span class="crono-num">22</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:22%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Jul</span>
+        <span class="crono-num">35</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:35%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Ago</span>
+        <span class="crono-num">48</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:48%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Set</span>
+        <span class="crono-num">61</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:61%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Out</span>
+        <span class="crono-num">74</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:74%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Nov</span>
+        <span class="crono-num">87</span>
+        <span class="crono-sub">alunos</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:87%"></div></div>
+      </div>
+      <div class="crono-col">
+        <span class="crono-mes-nome">Dez</span>
+        <span class="crono-num">100</span>
+        <span class="crono-sub">🎯 Open 100</span>
+        <div class="crono-bar"><div class="crono-bar-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI / INVESTIMENTO -->
+  <div class="section-title">Investimento & Retorno Projetado</div>
+  <div class="roi-section">
+    <div class="roi-card azul-box">
+      <div class="roi-label">Invest. Conservador / Mês</div>
+      <div class="roi-valor">R$3.214</div>
+      <div class="roi-desc">CPL de R$35 · R$107/dia em Meta Ads</div>
+    </div>
+    <div class="roi-card ouro-box">
+      <div class="roi-label">Invest. Agressivo / Mês</div>
+      <div class="roi-valor">R$5.510</div>
+      <div class="roi-desc">CPL de R$60 · R$184/dia para aceleração</div>
+    </div>
+    <div class="roi-card verde-box">
+      <div class="roi-label">ROI Projetado</div>
+      <div class="roi-valor" style="color:var(--verde);">8–14x</div>
+      <div class="roi-desc">Cada aluno gera R$3.600/ano no plano anual recorrente</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span><strong>DeRose Method · Unidade Ibira</strong></span>
+  <span>Dashboard 1 — Diretoria de Marketing</span>
+  <span>Projeto 2026 · Uso Interno</span>
+</div>
+
+</body>
+</html>
